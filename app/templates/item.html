@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid grid-cols-3 gap-6 mx-8">
+    <div class="col-span-2 bg-white rounded-md shadow-md p-6 m-6">
+        <a href="{{ url_for('collection_category', category=item.category.name )}}" class="bg-indigo-600 text-white px-4 py-2 rounded-3xl mb-4 hover:bg-indigo-800 capitalize">{{ item.category.name }}</a>
+        <h1 class="text-2xl font-bold mb-2 mt-4 uppercase">{{ item.item_name }}</h1>
+        <p class="text-gray-600 text-sm">Added on {{ item.timestamp }} by <a href="{{ url_for('user', username=item.seller.username)}}" class="text-indigo-600">{{ item.seller.username}}</a></p>
+
+        <img src="{{url_for('static', filename=item.images) }}" alt="Item Image" class="w-full mb-4 mt-6">
+        <div class="flow-root">
+            <dl class="-my-3 divide-y divide-gray-100 text-sm">
+              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt class="font-medium text-gray-900">Item Name</dt>
+                <dd class="text-gray-700 sm:col-span-2 capitalize">{{ item.item_name }}</dd>
+              </div>
+          
+              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt class="font-medium text-gray-900">Seller</dt>
+                <dd class="text-gray-700 sm:col-span-2">{{ item.seller.username }}</dd>
+              </div>
+          
+              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt class="font-medium text-gray-900">Price</dt>
+                <dd class="text-gray-700 sm:col-span-2">{{ item.price }} {{ item.price_currency }}</dd>
+              </div>
+          
+              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt class="font-medium text-gray-900">Description </dt>
+                <dd class="text-gray-700 sm:col-span-2">{{ item.item_desc }}</dd>
+              </div>
+
+              <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt class="font-medium text-gray-900">Contact Information</dt>
+                <dd class="text-gray-700 sm:col-span-2">{{ item.item_desc }}</dd>
+              </div>
+            </dl>
+        </div>
+    </div>
+    <div class="bg-white rounded-md shadow-md p-6 m-6 h-32">
+        <p class="text-black text-xl font-semibold mb-4">Price:  {{ item.price }} {{ item.price_currency }}</p>
+        <a class="px-3 py-2 text-indigo-500 rounded-md border border-indigo-500 hover:border-indigo-700 hover:text-white hover:bg-indigo-500 hover:size-10 text-md font-semibold mb-4">Procced to Checkout</a>
+        <!-- Add contact information here -->
+    </div>
+</div>
+{% endblock content %}

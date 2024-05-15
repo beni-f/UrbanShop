@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.min.css">   
+    <link rel="stylesheet" href="output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename='script/script-no-ajax.js') }}"></script>
+    <script src="{{ url_for('static', filename='script/script-ajax.js') }}"></script>
+    {% if title %}
+        <title>UrbanShop - {{ title }}</title>
+    {% else %}
+        <title>UrbanShop</title>
+    {% endif %}
+    <style>
+        body{
+          font-family: 'Poppins';
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white">
+        <div class="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
+          <a class="block text-teal-600" href="{{url_for('home')}}">
+            <img src="{{ url_for('static', filename='images/logo.png')}}" class="h-32 mt-6 mb-4">
+          </a>
+      
+          <div class="flex flex-1 items-center justify-end md:justify-between mt-4">
+            <nav aria-label="Global" class="hidden md:block">
+              <ul class="flex items-center gap-6 text-sm">
+                <li>
+                  <a class="text-gray-500 transition hover:text-gray-500/75" href="{{ url_for('collections') }}"> Collections </a>
+                </li>
+      
+                <li>
+                  <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Services </a>
+                </li>
+      
+                <li>
+                  <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> About Us </a>
+                </li>
+              </ul>
+            </nav>
+            {% if g.search_form %}
+            <form method="get" action="{{ url_for('search') }}">
+              <div>
+                {{ g.search_form.q(size=20, class='px-4 py-1 border border-gray-300',
+                            placeholder=g.search_form.q.label.text) }}
+              </div>
+            </form>
+            {% endif %}
+            <div class="flex items-center gap-4">
+                <div class="sm:flex sm:gap-4 items-center">
+                    <a href="{{ url_for('carts') }}">
+                      <img src="{{ url_for('static', filename='images/Cart.png')}}" class="h-8">
+                    </a>
+                    {% if not current_user.is_authenticated %}
+                        <a
+                        class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+                        href="{{ url_for('login') }}"
+                        >
+                        Login
+                        </a>
+            
+                        <a
+                        class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+                        href="{{ url_for('register') }}"
+                        >
+                        Register
+                        </a>
+                    {% else %}
+                        <a
+                        class="rounded-md px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+                        href="{{ url_for('user', username=current_user.username) }}"
+                        >
+                            <img src="{{ url_for('static', filename='images/user.png')}}" class="h-8 inline-block">
+                            <p class="inline-block text-md">{{ current_user.username }}</p>
+                        </a>
+                        <a
+                        class="hidden rounded-md bg-indigo-600 px-5 py-2.5 text-white font-medium transition hover:text-teal-600/75 sm:block"
+                        href="{{ url_for('create_item') }}"
+                        >
+                           + Add Listing
+                        </a>
+                    {% endif %}
+                </div>
+      
+              <button
+                class="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden"
+              >
+                <span class="sr-only">Toggle menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="fixed left-0 w-full flex justify-center">
+          <div class="max-w-sm">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flashed-message rounded-md mb-4 {% if category == 'danger' %}bg-red-100 border-red-100{% elif category == 'success' %}bg-green-100 border-green-100{% endif %} p-4 flex items-center">
+                    {% if category == 'danger' %}
+                      <img src="{{ url_for('static', filename='images/danger.png') }}" class="text-red-600 h-8 mr-3">
+                    {% elif category == 'success' %}
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    {% endif %}
+                    <p class="{% if category == 'danger' %}text-red-700{% elif category == 'success' %}text-green-700{% endif %}">{{ message }}</p>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+          </div>
+        </div>              
+    </header>
+    {% block content %}
+    {% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+          const messages = document.querySelectorAll('.flashed-message');
+          messages.forEach(message =>{
+            setTimeout(() => {
+              message.classList.add('transition-opacity', 'opacity-5');
+
+              setTimeout(() => {
+                message.remove();
+              }, 1000);
+            }, 3000);
+          });
+        });
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js">  // id
+    </script>
+    <script>
+        fetch('https://open.er-api.com/v6/latest/USD')
+        .then(response => response.json())
+        .then(data => {
+            const currencies = data.rates;
+            const select = document.getElementById('price_currency');
+    
+            for(const currency in currencies)
+            {
+                const option = document.createElement('option');
+                option.value = currency;
+                option.textContent = currency;
+                select.appendChild(option);
+            }
+        })
+        .catch(error=> console.error('Error fetching currency data:', error));
+        new MultiSelectTag('category');
+    </script>
+    {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
+</body>
+</html>

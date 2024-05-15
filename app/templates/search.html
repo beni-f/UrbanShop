@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="my-10 text-4xl pl-10 font-bold">Search Results</h1>
+    {% if items %}
+    <div class="md:col-span-3 ml-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for item in items %}
+            <div class="bg-white p-4 rounded-md shadow-md hover:h-64 hover:text-2xl transform hover:scale-105 transition-transform duration-300 bg-cover bg-center bg-no-repeat mb-4 mr-5">
+                <a href="{{ url_for('item', item_name=item.item_name) }}" class="group block overflow-hidden">
+                    <div class="relative h-[350px] sm:h-[450px]">
+                        <img
+                            src="{{ url_for('static', filename=item.images) }}"
+                            alt=""
+                            class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
+                        />
+                    </div>
+                    
+                    <div class="relative bg-white pt-3">
+                        <h3 class="text-sm text-gray-700 group-hover:underline group-hover:underline-offset-4">
+                            {{ item.item_name }}
+                        </h3>
+                    
+                        <p class="mt-1.5 tracking-wide text-gray-900 mb-4">{{ item.price }} {{ item.price_currency }}</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+        <p class="text-gray-600 text-3xl font-bold text-center align-middle">No results for {{ g.search_form.q.data }}</p>
+    {% endif %}
+    <nav class="flex justify-normal" aria-label="Post navigation">
+        <ul class="pagination">
+            {% if prev_url %}
+            <li class="page-item{% if not prev_url %} disabled{% endif %} ml-10 mr-10 my-6">
+                <a class="page-link px-4 py-2 border rounded-lg border-gray-300 hover:bg-gray-100" href="{{ prev_url }}">
+                    <span aria-hidden="true">&larr;</span> Newer Posts
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+        <ul class="pagination">
+            {% if next_url %}
+            <li class="page-item my-6">
+                <a class="page-link px-4 py-2 border rounded-lg border-gray-300 hover:bg-gray-100 ml-10 mr-10" href="{{ next_url }}">
+                    Older Posts <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+{% endblock content %}

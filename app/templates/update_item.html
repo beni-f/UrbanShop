@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="mr-auto max-w-2xl">
+          <h1 class="text-2xl font-bold text-indigo-600 sm:text-3xl">Update Your Item</h1>
+      
+      
+          <form action="" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8" method="POST">
+            {{ form.hidden_tag() }}
+            <p class="text-sm font-medium uppercase">Update Item</p>
+
+            <hr>
+            <div>
+                <label for="item_name" class="block text-sm font-medium text-gray-700">{{ form.item_name.label }}</label>
+                <div class="relative">
+                  {{ form.item_name(class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm", placeholder="Update Item Name") }}
+        
+                  <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="size-4 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                      />
+                    </svg>
+                  </span>
+                </div>
+
+                {% for error in form.item_name.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700">{{ form.price.label }}</label>
+
+                    <div class="relative">
+                    {{ form.price(class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm", placeholder="Update Price") }}
+                
+                        <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="size-4 text-gray-400"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                            />
+                            </svg>
+                        </span>
+                    </div>
+
+                    {% for error in form.price.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div>
+                    <label for="price_currency" class="block text-sm font-medium text-gray-700">{{ form.price_currency.label }}</label>
+                    <select id="price_currency" name="price_currency" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-3 " value="{{ form.price_currency.data }}"></select>
+                </div>
+            </div>
+            
+            <div>
+                <label for="item_desc" class="block text-sm font-medium text-gray-700">{{ form.item_desc.label }}</label>
+                <textarea id="item_desc" name="item_desc" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-3" cols="50" rows="5">{{ form.item_desc.data }}</textarea>
+
+                {% for error in form.item_desc.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="flex items-center">
+                {% for item_status_id, item_status_status in form.item_status.choices %}
+                    <input type="radio" name="item_status" value="{{item_status_id}}" class="mr-2">
+                    <label for="item_status" class="block text-sm font-medium text-gray-700 mr-4">{{ item_status_status }}</label>
+                {% endfor %}
+
+                {% for error in form.item_status.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button
+              type="submit"
+              class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+            >
+              Update
+            </button>
+    </div>
+{% endblock content %}

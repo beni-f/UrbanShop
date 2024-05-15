@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <div>
+        <p class="text-6xl ml-6 my-10 font-bold">Collections</p>
+    </div>
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 m-4 mt-7">
+        {% for category in categories %}
+        <a href="{{ url_for('collection_category', category=category.name) }}">
+            <div class="h-52 rounded-lg bg-indigo-600 p-3 text-white font-bold text-xl uppercase hover:h-64 hover:text-2xl transform hover:scale-105 transition-transform duration-300 bg-cover bg-center bg-no-repeat" style="background-image: url('static/images/{{ category.name }}.jpg');">
+                {{ category.name }}
+            </div>
+        </a>
+            
+        {% endfor %}
+    </div>
+{% endblock %}

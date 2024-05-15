@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-5 gap-6 mt-10">
+    <div class="md:col-span-1">
+        <aside class="bg-white p-4 rounded-md shadow-md mt-8 ml-8 w-64">
+            {% if user == current_user %}
+                <a href="{{ url_for('update_profile') }}" class="block text-indigo-600 hover:text-hover-700 mb-2 pl-4">> Update Profile</a>
+                <a href="{{ url_for('logout') }}" class="block text-red-500 hover:text-red-700 pl-4"> > Logout</a>
+            {% else %}
+                <p class="font-bold text-lg mb-4">Contact Information</p>
+                <hr>
+                <p class="font-bold my-4">Phone Number: {{ user.phone_number }}</p>
+                <div class="flex">
+                    {% if user.instagram_link %}
+                        <a href="{{ user.instagram_link }}"><img src="{{ url_for('static', filename='images/instagram.png')}}" class="h-4 mr-3"></a>
+                    {% endif %}
+                    {% if user.telegram_link %}
+                        <a href="{{ user.instagram_link }}"><img src="{{ url_for('static', filename='images/telegram.png')}}" class="h-4"></a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </aside>
+    </div>
+    <div class="md:col-span-3 ml-10">
+        <h1 class="text-2xl font-semibold mb-6 text-center md:text-left">{{ user.firstname.upper() + " " + user.lastname.upper() }}</h1>
+        <div class="bg-gray-50 rounded-md shadow-md p-6">
+            <h2 class="text-lg mb-7 text-indigo-600 font-bold">ITEMS POSTED</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for item in items %}
+                <div class="bg-white p-4 rounded-md shadow-md hover:h-64 hover:text-2xl transform hover:scale-105 transition-transform duration-300 bg-cover bg-center bg-no-repeat mb-4">
+                    <a href="{{ url_for('item', item_name=item.item_name) }}" class="group block overflow-hidden">
+                        <div class="relative h-[350px] sm:h-[450px]">
+                            <img
+                                src="{{ url_for('static', filename=item.images) }}"
+                                alt=""
+                                class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
+                            />
+                        </div>
+                      
+                        <div class="relative bg-white pt-3">
+                            <h3 class="text-sm text-gray-700 group-hover:underline group-hover:underline-offset-4">
+                                {{ item.item_name }}
+                            </h3>
+                        
+                            <p class="mt-1.5 tracking-wide text-gray-900 mb-4">{{ item.price }} {{ item.price_currency }}</p>
+                        </div>
+                    </a>
+                    {% if user == current_user %}
+                        <a class="bg-indigo-600 hover:bg-white text-white hover:text-indigo-600 border-indigo-600 border font-medium py-2 px-4 mr-6 rounded-md" href="{{ url_for('update_item', item_name=item.item_name)}}">Update Item</a>
+                        <a class="bg-red-600 hover:bg-white text-white hover:text-red-600 border-red-600 border py-2 px-4 rounded-md" href="{{ url_for('delete_item', item_name=item.item_name)}}">Delete Item</a>
+                    {% else %}
+                        <form method="post" action="{{ url_for('carts', item_id=item.id) }}" class="mt-4">
+                            {{ cart_form.hidden_tag() }}
+                            <button class="block w-full rounded bg-indigo-600 p-4 text-sm font-medium transition hover:scale-105">
+                                {{ cart_form.submit(class="bg-indigo-600 text-white px-4 py-2 rounded text-xl hover:scale-105") }}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

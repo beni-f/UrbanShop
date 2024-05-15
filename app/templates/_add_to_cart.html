@@ -1,0 +1,6 @@
+<form method="post" action="{{ url_for('carts', item_id=item.id) }}" class="mt-4">
+    {{ cart_form.hidden_tag() }}
+    <button class="block w-full rounded bg-indigo-600 p-4 text-sm font-medium transition hover:scale-105">
+        {{ cart_form.submit(class="bg-indigo-600 text-white px-4 py-2 rounded text-xl hover:scale-105") }}
+    </button>
+</form>
